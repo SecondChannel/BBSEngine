@@ -1,12 +1,5 @@
 <?php
-# TinyIB
-#
-# https://github.com/tslocum/TinyIB
-#
-# Contact the author via tslocum@gmail.com if you need support.
-# See README for instructions on configuring, moderating and upgrading your board.
-#
-# Set TINYIB_DBMODE to a MySQL-related mode if it's available.  By default it's set to flatfile, which can be very slow.
+#BBSE based on TinyIB
 
 // Administrator/moderator credentials
 define('TINYIB_ADMINPASS', '');       // Administrators have full access to the board
@@ -37,8 +30,8 @@ $tinyib_uploads = array('image/jpeg'                    => array('jpg'),
                         'image/png'                     => array('png'),
                         'image/gif'                     => array('gif'));
 #                       'application/x-shockwave-flash' => array('swf', 'swf_thumbnail.png'));
-#                       'video/webm'                    => array('webm')); // WebM upload requires mediainfo and ffmpegthumbnailer  (see README for instructions)
-#                       'audio/webm'                    => array('webm'));
+                       'video/webm'                    => array('webm')); // WebM upload requires mediainfo and ffmpegthumbnailer  (see README for instructions)
+                       'audio/webm'                    => array('webm'));
 
 // oEmbed APIs
 //   Empty array to disable
@@ -61,7 +54,7 @@ define('TINYIB_MAXW', 250);           // Width
 define('TINYIB_MAXH', 250);           // Height
 
 // Tripcode seed - Must not change once set!
-define('TINYIB_TRIPSEED', '');        // Enter some random text  (used when generating secure tripcodes)
+define('TINYIB_TRIPSEED', 'tersfhdfsgdhxvdggsuusagud');        // Enter some random text  (used when generating secure tripcodes)
 
 // CAPTCHA
 //   The following only apply when TINYIB_CAPTCHA is set to recaptcha

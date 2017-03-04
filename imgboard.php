@@ -543,3 +543,4 @@ if (isset($_POST['message']) || isset($_POST['file'])) {
 if ($redirect) {
 	echo '--&gt; --&gt; --&gt;<meta http-equiv="refresh" content="' . (isset($slow_redirect) ? '3' : '0') . ';url=' . (is_string($redirect) ? $redirect : 'index.html') . '">';
 }
+?>

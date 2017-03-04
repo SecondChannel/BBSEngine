@@ -25,8 +25,11 @@ EOF;
 		<link rel="stylesheet" type="text/css" href="css/global.css">
 		<link rel="stylesheet" type="text/css" href="css/futaba.css" title="Futaba">
 		<link rel="alternate stylesheet" type="text/css" href="css/burichan.css" title="Burichan">
+		<link rel="alternate stylesheet" type="text/css" href="css/minimalist.css" title="Minimalist">
+		<link rel="alternate stylesheet" type="text/css" href="css/2chan.css" title="2chan">
 		<script src="js/jquery.js"></script>
 		<script src="js/tinyib.js"></script>
+		<script src="js/style.js"></script>
 		$js_captcha
 	</head>
 EOF;
@@ -69,11 +72,29 @@ function makeLinksClickable($text) {
 
 	return $text;
 }
-
 function buildPost($post, $res) {
-	$return = "";
 	$threadid = ($post['parent'] == TINYIB_NEWTHREAD) ? $post['id'] : $post['parent'];
-
+	if ($post['parent'] == TINYIB_NEWTHREAD) {
+		$return = '<span id="unhidethread'.$threadid.TINYIB_BOARD.'" style="display: none;">
+		<a href="javascript:togglethread(\''.$threadid.'\');return false;" title="Show thread">
+		<img src="icons/show.svg" width="16" border="0" alt="Show thread" />
+		</a> Thread <a href="/'.TINYIB_BOARD.'/res/'.$threadid.'.html">'.'№'.$threadid.'</a> is hidden.
+		</span>
+		<div id="thread'.$threadid.TINYIB_BOARD.'"> 
+		<div class="postnode op">
+		<script type="text/javascript"><!--
+		if (localStorage[\'hiddenThreads.\' + \''.TINYIB_BOARD.'\'] && in_array(\''.$threadid.'\', localStorage[\'hiddenThreads.\' + \''.TINYIB_BOARD.'\'].split(\',\') ) ) {
+		document.getElementById(\'unhidethread'.$threadid.TINYIB_BOARD.'\').style.display = \'inline-block\';
+		document.getElementById(\'thread'.$threadid.TINYIB_BOARD.'\').style.display = \'none\';
+		}
+		//--></script>';
+		global $suka;
+		$suka=1;
+		$return .= '<a name="s'.$suka.'"></a>';
+		$suka+=1;
+	} else {
+		$return = '';
+	}
 	if ($res == TINYIB_RESPAGE) {
 		$reflink = "<a href=\"$threadid.html#{$post['id']}\">No.</a><a href=\"$threadid.html#q{$post['id']}\" onclick=\"javascript:quotePost('{$post['id']}')\">{$post['id']}</a>";
 	} else {
@@ -217,7 +238,6 @@ EOF;
 </table>
 EOF;
 	}
-
 	return $return;
 }
 
@@ -359,6 +379,13 @@ EOF;
 
 	$body = <<<EOF
 	<body>
+	[<a href="/">Root</a>] - <select name="switchcontrol" size="1" onChange="chooseStyle(this.options[this.selectedIndex].value, 60)">
+<option value="none" selected="selected">Themes</option>
+<option name="Futaba" value="Futaba" id="Futaba"> Futaba</option>
+<option name="Burichan" value="Burichan" id="Burichan"> Burichan</option>
+<option name="Minimalist" value="Minimalist" id="Minimalist"> Minimalist</option>
+<option name="2chan" value="2chan" id="2chan"> 2chan classic</option>
+</select>
 		<div class="adminbar">
 			[<a href="$managelink" style="text-decoration: underline;">Manage</a>]
 		</div>
@@ -472,7 +499,7 @@ function rebuildIndexes() {
 			$htmlreplies[] = buildPost($replies[$j], TINYIB_INDEXPAGE);
 		}
 
-		$htmlposts .= buildPost($thread, TINYIB_INDEXPAGE) . implode('', array_reverse($htmlreplies)) . "\n<hr>";
+		$htmlposts .= buildPost($thread, TINYIB_INDEXPAGE) . implode('', array_reverse($htmlreplies)) . "\n</div>\n<hr>";
 
 		if (++$i >= TINYIB_THREADSPERPAGE) {
 			$file = ($page == 0) ? 'index.html' : $page . '.html';
