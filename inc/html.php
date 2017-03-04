@@ -23,9 +23,9 @@ EOF;
 		</title>
 		<link rel="shortcut icon" href="favicon.ico">
 		<link rel="stylesheet" type="text/css" href="css/global.css">
-		<link rel="stylesheet" type="text/css" href="css/futaba.css" title="Futaba">
+		<link rel="stylesheet" type="text/css" href="css/minimalist.css" title="Minimalist">
 		<link rel="alternate stylesheet" type="text/css" href="css/burichan.css" title="Burichan">
-		<link rel="alternate stylesheet" type="text/css" href="css/minimalist.css" title="Minimalist">
+		<link rel="alternate stylesheet" type="text/css" href="css/futaba.css" title="Futaba">
 		<link rel="alternate stylesheet" type="text/css" href="css/2chan.css" title="2chan">
 		<script src="js/jquery.js"></script>
 		<script src="js/tinyib.js"></script>
@@ -42,7 +42,7 @@ function pageFooter() {
 
 	return <<<EOF
 		<div class="footer">
-			- <a href="http://www.2chan.net" target="_top">futaba</a> + <a href="http://www.1chan.net" target="_top">futallaby</a> + <a href="https://github.com/tslocum/TinyIB" target="_top">tinyib</a> -
+			[<a href="https://github.com/tslocum/TinyIB" target="_top">tinyib</a> x <a href="https://github.com/SecondChannel/BBSEngine" target="_top">BBSE</a>]
 		</div>
 	</body>
 </html>
@@ -339,7 +339,7 @@ EOF;
 		$filetypes_html = '<li>' . supportedFileTypes() . '</li>';
 
 		$file_input_html = <<<EOF
-					<tr>
+					<tr id="fileform">
 						<td class="postblock">
 							File
 						</td>
@@ -352,12 +352,12 @@ EOF;
 
 	if (!empty($tinyib_embeds)) {
 		$embed_input_html = <<<EOF
-					<tr>
+					<tr id="embedform">
 						<td class="postblock">
 							Embed
 						</td>
 						<td>
-							<input type="text" name="embed" size="28" accesskey="x" autocomplete="off">&nbsp;&nbsp;(paste a YouTube URL)
+							<input type="text" name="embed" size="41" accesskey="x" autocomplete="off">
 						</td>
 					</tr>
 EOF;
@@ -378,12 +378,12 @@ EOF;
 	}
 
 	$body = <<<EOF
-	<body>
+	<body  onload="mainEmbedForm();">
 	[<a href="/">Root</a>] - <select name="switchcontrol" size="1" onChange="chooseStyle(this.options[this.selectedIndex].value, 60)">
 <option value="none" selected="selected">Themes</option>
-<option name="Futaba" value="Futaba" id="Futaba"> Futaba</option>
-<option name="Burichan" value="Burichan" id="Burichan"> Burichan</option>
 <option name="Minimalist" value="Minimalist" id="Minimalist"> Minimalist</option>
+<option name="Burichan" value="Burichan" id="Burichan"> Burichan</option>
+<option name="Futaba" value="Futaba" id="Futaba"> Futaba</option>
 <option name="2chan" value="2chan" id="2chan"> 2chan classic</option>
 </select>
 		<div class="adminbar">
@@ -402,6 +402,14 @@ EOF;
 			<table class="postform">
 				<tbody>
 					<tr>
+					<tr>
+						<td>
+						</td>
+						<td>
+							<input id="sage" name="email" value="sage" style="vertical-align: middle;" type="checkbox"> Sage <input style="vertical-align: middle;" type="checkbox" id="embedcheck" onclick="mainEmbedForm();"> Embed
+						</td>
+
+					</tr>
 						<td class="postblock">
 							Name
 						</td>
@@ -411,18 +419,10 @@ EOF;
 					</tr>
 					<tr>
 						<td class="postblock">
-							E-mail
-						</td>
-						<td>
-							<input type="text" name="email" size="28" maxlength="75" accesskey="e">
-						</td>
-					</tr>
-					<tr>
-						<td class="postblock">
 							Subject
 						</td>
 						<td>
-							<input type="text" name="subject" size="40" maxlength="75" accesskey="s" autocomplete="off">
+							<input type="text" name="subject" size="28" maxlength="75" accesskey="s" autocomplete="off">
 							<input type="submit" value="Submit" accesskey="z">
 						</td>
 					</tr>
@@ -431,7 +431,7 @@ EOF;
 							Message
 						</td>
 						<td>
-							<textarea id="message" name="message" cols="48" rows="4" accesskey="m"></textarea>
+							<textarea id="message" name="message" cols="49" rows="7" accesskey="m"></textarea>
 						</td>
 					</tr>
 					$captcha_html

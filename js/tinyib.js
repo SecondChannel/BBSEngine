@@ -10,13 +10,23 @@ function quotePost(postID) {
 	return false;
 }
 
-function reloadCAPTCHA() {
-	$("#captcha").val("").focus();
-	$("#captchaimage").attr("src", $("#captchaimage").attr("src") + "#new")
-
-	return false;
+function showEmbedForm() {
+    $("#embedform").show();
+    $("#fileform").hide();
 }
 
+function hideEmbedForm() {
+    $("#embedform").hide();
+    $("#fileform").show();
+}
+
+function mainEmbedForm(){
+	if ($("#embedcheck").is(":checked")) {
+		showEmbedForm();
+	} else {
+		hideEmbedForm();
+	}
+}
 function expandFile(e, id){
 	if (e == undefined || e.which == undefined || e.which == 1) {
 		if ($("#thumbfile" + id).attr('expanded') != 'true') {
