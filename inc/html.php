@@ -12,7 +12,7 @@ function pageHeader() {
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8">
 		<meta http-equiv="cache-control" content="max-age=0">
-		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
 		<meta http-equiv="expires" content="0">
 		<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT">
 		<meta http-equiv="pragma" content="no-cache">
@@ -406,7 +406,7 @@ EOF;
 						<td>
 						</td>
 						<td>
-							<input id="sage" name="email" value="sage" style="vertical-align: middle;" type="checkbox"> Sage <input style="vertical-align: middle;" type="checkbox" id="embedcheck" onclick="mainEmbedForm();"> Embed
+							<input id="sage" name="email" value="sage" style="vertical-align: middle;" type="checkbox"> Sage <input id="noko" name="noko" value="noko" style="vertical-align: middle;" type="checkbox"> Noko <input style="vertical-align: middle;" type="checkbox" id="embedcheck" onclick="mainEmbedForm();"> Embed
 						</td>
 
 					</tr>
@@ -414,7 +414,7 @@ EOF;
 							Name
 						</td>
 						<td>
-							<input type="text" name="name" size="28" maxlength="75" accesskey="n">
+							<input type="text" name="name" size="31" maxlength="75" accesskey="n">
 						</td>
 					</tr>
 					<tr>
@@ -422,8 +422,8 @@ EOF;
 							Subject
 						</td>
 						<td>
-							<input type="text" name="subject" size="28" maxlength="75" accesskey="s" autocomplete="off">
-							<input type="submit" value="Submit" accesskey="z">
+							<input type="text" name="subject" size="31" maxlength="75" accesskey="s" autocomplete="off">
+							<input type="submit" value="Post" accesskey="z">
 						</td>
 					</tr>
 					<tr>
@@ -431,7 +431,7 @@ EOF;
 							Message
 						</td>
 						<td>
-							<textarea id="message" name="message" cols="49" rows="7" accesskey="m"></textarea>
+							<textarea id="message" name="message" cols="50" rows="7" accesskey="m"></textarea>
 						</td>
 					</tr>
 					$captcha_html
@@ -442,7 +442,7 @@ EOF;
 							Password
 						</td>
 						<td>
-							<input type="password" name="password" id="newpostpassword" size="8" accesskey="p">&nbsp;&nbsp;(for post and file deletion)
+							<input type="password" name="password" id="newpostpassword" size="8" accesskey="p">
 						</td>
 					</tr>
 					<tr>
@@ -865,8 +865,8 @@ EOF;
 	<td valign="top" align="right">
 		<form method="get" action="?">
 			<input type="hidden" name="manage">
-			<input type="hidden" name="update">
-			<input type="submit" value="Update TinyIB" class="managebutton">
+			<!--input type="hidden" name="update">
+			<input type="submit" value="Update TinyIB" class="managebutton"-->
 		</form>
 	</td>
 EOF;

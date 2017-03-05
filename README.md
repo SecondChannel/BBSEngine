@@ -1,6 +1,6 @@
 BBSEngine -- Движок для параш основанный на TinyIB
 ====
-Вообще тут пока были изменены лишь картиночки, код пока что не трогал. Всё что ниже тоже не особо менял. Сейчас начну перепиливать код.
+
 
 Features
 ------------
@@ -14,7 +14,6 @@ Features
      - Moderators are only able to sticky threads, delete posts, and approve posts when necessary.  (See ``TINYIB_REQMOD``)
    - Ban offensive/abusive posters across all boards.
    - Post using raw HTML.
-   - Upgrade automatically when installed via git.  (Tested on Linux only)
 
 Installing
 ------------

@@ -157,7 +157,7 @@ function nameAndTripcode($name) {
 
 function nameBlock($name, $tripcode, $email, $timestamp, $rawposttext) {
 	$output = '<span class="postername">';
-	$output .= ($name == '' && $tripcode == '') ? 'Anonymous' : $name;
+	$output .= ($name == '' && $tripcode == '') ? TINYIB_ANON : $name;
 
 	if ($tripcode != '') {
 		$output .= '</span><span class="postertrip">!' . $tripcode;
@@ -169,7 +169,8 @@ function nameBlock($name, $tripcode, $email, $timestamp, $rawposttext) {
 		$output = '<a href="mailto:' . $email . '">' . $output . '</a>';
 	}
 
-	return $output . $rawposttext . ' ' . date('y/m/d(D)H:i:s', $timestamp);
+	// return $output . $rawposttext . ' ' . date('y/m/d(D)H:i:s', $timestamp); // Не знаю зачем я это оставил
+	return $output . $rawposttext . ' ' . date('H:i:s \/ j F Y (l)', $timestamp);
 }
 
 function writePage($filename, $contents) {

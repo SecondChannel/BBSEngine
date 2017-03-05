@@ -7,9 +7,11 @@ define('TINYIB_MODPASS', '');         // Moderators only have access to delete (
 
 // Board description and behavior
 define('TINYIB_BOARD', 'b');          // Unique identifier for this board using only letters and numbers
-define('TINYIB_BOARDDESC', 'TinyIB'); // Displayed at the top of every page
+define('TINYIB_BOARDDESC', 'Board'); // Displayed at the top of every page
 define('TINYIB_CAPTCHA', '');         // Reduce spam by requiring users to pass a CAPTCHA when posting: simple / recaptcha  (click Rebuild All in the management panel after enabling)  ['' to disable]
 define('TINYIB_REQMOD', '');          // Require moderation before displaying posts: files / all  (see README for instructions, only MySQL is supported)  ['' to disable]
+define('TINYIB_ANON', 'Anonymous'); 
+date_default_timezone_set('Europe/Moscow'); // Timezone
 
 // Board appearance
 define('TINYIB_LOGO', '');            // Logo HTML
@@ -28,9 +30,9 @@ define('TINYIB_MAXREPLIES', 0);       // Maximum replies before a thread stops b
 $tinyib_uploads = array('image/jpeg'                    => array('jpg'),
                         'image/pjpeg'                   => array('jpg'),
                         'image/png'                     => array('png'),
-                        'image/gif'                     => array('gif'));
-#                       'application/x-shockwave-flash' => array('swf', 'swf_thumbnail.png'));
-                       'video/webm'                    => array('webm')); // WebM upload requires mediainfo and ffmpegthumbnailer  (see README for instructions)
+                        'image/gif'                     => array('gif'),
+#                       'application/x-shockwave-flash' => array('swf', 'swf_thumbnail.png'),
+                       'video/webm'                    => array('webm'), // WebM upload requires mediainfo and ffmpegthumbnailer  (see README for instructions)
                        'audio/webm'                    => array('webm'));
 
 // oEmbed APIs
@@ -41,7 +43,7 @@ $tinyib_embeds = array('SoundCloud' => 'http://soundcloud.com/oembed?format=json
 
 // File control
 define('TINYIB_MAXKB', 2048);         // Maximum file size in kilobytes  [0 to disable]
-define('TINYIB_MAXKBDESC', '2 MB');   // Human-readable representation of the maximum file size
+define('TINYIB_MAXKBDESC', TINYIB_MAXKB/1024 . ' MB');   // Human-readable representation of the maximum file size
 define('TINYIB_THUMBNAIL', 'gd');     // Thumbnail method to use: gd / imagemagick  (see README for instructions)
 define('TINYIB_NOFILEOK', false);     // Allow the creation of new threads without uploading a file
 
@@ -54,7 +56,7 @@ define('TINYIB_MAXW', 250);           // Width
 define('TINYIB_MAXH', 250);           // Height
 
 // Tripcode seed - Must not change once set!
-define('TINYIB_TRIPSEED', 'tersfhdfsgdhxvdggsuusagud');        // Enter some random text  (used when generating secure tripcodes)
+define('TINYIB_TRIPSEED', '');        // Enter some random text  (used when generating secure tripcodes)
 
 // CAPTCHA
 //   The following only apply when TINYIB_CAPTCHA is set to recaptcha

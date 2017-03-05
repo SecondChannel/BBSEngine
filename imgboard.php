@@ -87,7 +87,16 @@ if (isset($_POST['message']) || isset($_POST['file'])) {
 	list($post['name'], $post['tripcode']) = nameAndTripcode($_POST['name']);
 
 	$post['name'] = cleanString(substr($post['name'], 0, 75));
-	$post['email'] = cleanString(str_replace('"', '&quot;', substr($_POST['email'], 0, 75)));
+	if (isset ( $_POST['email'])) {
+		$post['email'] = cleanString(str_replace('"', '&quot;', substr($_POST['email'], 0, 75)));
+	} else {
+		$post['email'] = '';
+	}
+	if (isset($_POST['noko'])) {
+		$post['noko'] = '' . cleanString(str_replace('"', '&quot;', substr($_POST['noko'], 0, 75)));
+	} else {
+		$post['noko'] = '';
+	}
 	$post['subject'] = cleanString(substr($_POST['subject'], 0, 75));
 	if ($rawpost) {
 		$rawposttext = ($isadmin) ? ' <span style="color: red;">## Admin</span>' : ' <span style="color: purple;">## Mod</span>';
@@ -282,7 +291,7 @@ if (isset($_POST['message']) || isset($_POST['file'])) {
 	$post['id'] = insertPost($post);
 
 	if ($post['moderated'] == '1') {
-		if (strtolower($post['email']) == 'noko') {
+		if (strtolower($post['noko']) == 'noko') {
 			$redirect = 'res/' . ($post['parent'] == TINYIB_NEWTHREAD ? $post['id'] : $post['parent']) . '.html#' . $post['id'];
 		}
 
