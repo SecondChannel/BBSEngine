@@ -165,7 +165,7 @@ function nameBlock($name, $tripcode, $email, $timestamp, $rawposttext) {
 
 	$output .= '</span>';
 
-	if ($email != '' && strtolower($email) != 'noko') {
+	if ($email != '') {
 		$output = '<a href="mailto:' . $email . '">' . $output . '</a>';
 	}
 

@@ -10,6 +10,73 @@ function quotePost(postID) {
 	return false;
 }
 
+function contains(a, obj) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function contains_rev(obj, a) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
+var HiddenThreads = {
+  list: function() {
+    if (localStorage == null) {
+      trace(_.noLocalStorage);
+      return [];
+    }
+    var list = localStorage.getItem('hiddenThreads.' + this_board_dir);
+    if (list == null) return [];
+    return list.split(',');
+  },
+  isHidden: function(threadid) { return contains(HiddenThreads.list(),threadid) },
+  hide: function(threadid) { 
+    if (localStorage == null) alert(_.noLocalStorage);
+    else {
+      var newlist = HiddenThreads.list();
+      newlist.push(threadid.toString());
+      localStorage.setItem('hiddenThreads.' + this_board_dir, newlist.join(','));
+    }
+  },
+  unhide: function(threadid) { 
+    if (localStorage == null) alert(_.noLocalStorage);
+    else {
+      var list = HiddenThreads.list();
+      var i = list.indexOf(threadid.toString());
+      if (i == -1) return;
+      var newlist = list.slice(0,i);
+      newlist = newlist.concat(list.slice(i+1));
+      localStorage.setItem('hiddenThreads.' + this_board_dir, newlist.join(','));
+    }
+  }
+}
+
+function togglethread(threadid) {
+  if (HiddenThreads.isHidden(threadid)) {
+    $('#t' + threadid + this_board_dir).show();
+    $('#ut' + threadid + this_board_dir).hide();
+    HiddenThreads.unhide(threadid);
+  } else {
+    $('#t' + threadid + this_board_dir).hide();
+    $('#ut' + threadid + this_board_dir).show();
+    HiddenThreads.hide(threadid);
+  }
+  return false;
+}
+
+function hideThread(threadNum){
+	$("#t"+threadNum).hide();
+}
+
 function showEmbedForm() {
     $("#embedform").show();
     $("#fileform").hide();

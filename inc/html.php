@@ -30,6 +30,13 @@ EOF;
 		<script src="js/jquery.js"></script>
 		<script src="js/tinyib.js"></script>
 		<script src="js/style.js"></script>
+		<script>
+		var this_board_dir;
+		this_board_dir = "
+EOF;
+	$return .= TINYIB_BOARD . <<<EOF
+"; 
+		</script>
 		$js_captcha
 	</head>
 EOF;
@@ -75,23 +82,40 @@ function makeLinksClickable($text) {
 function buildPost($post, $res) {
 	$threadid = ($post['parent'] == TINYIB_NEWTHREAD) ? $post['id'] : $post['parent'];
 	if ($post['parent'] == TINYIB_NEWTHREAD) {
-		$return = '<span id="unhidethread'.$threadid.TINYIB_BOARD.'" style="display: none;">
-		<a href="javascript:togglethread(\''.$threadid.'\');return false;" title="Show thread">
-		<img src="icons/show.svg" width="16" border="0" alt="Show thread" />
-		</a> Thread <a href="/'.TINYIB_BOARD.'/res/'.$threadid.'.html">'.'№'.$threadid.'</a> is hidden.
-		</span>
-		<div id="thread'.$threadid.TINYIB_BOARD.'"> 
-		<div class="postnode op">
+		//$return = '<span id="unhidethread'.$threadid.TINYIB_BOARD.'" style="display: none;">
+		//<a href="javascript:togglethread(\''.$threadid.'\');return false;" title="Show thread">
+		//<img src="icons/show.svg" width="16" border="0" alt="Show thread" />
+		//</a> Thread <a href="/'.TINYIB_BOARD.'/res/'.$threadid.'.html">'.'№'.$threadid.'</a> is hidden.
+		//</span>
+		$return = '
+
+<div class="hiddenthread" style="opacity: 0.5; display: none;" id="ut'. $threadid . TINYIB_BOARD .'"> 
+		<span id="sa1"><img alt="H" class="extButton threadHideButton" onclick="togglethread(\''.$threadid.'\')" src="/b/icons/post_expand_plus.png" title="Unhide thread">&nbsp;</span>
+<a id="'.$threadid.'"></a>
+<label>
+	<input name="delete" value="'.$threadid.'" type="checkbox">' . $post["nameblock"] . '
+</label>
+<span class="reflink">
+	<a href="res/'.$threadid.'.html#'.$threadid.'">No.</a><a href="res/'. $threadid .'.html#q'. $threadid .'">'. $threadid .'</a>
+</span>
+<br>
+</div>
+		<div class="thread" id="t'.$threadid.TINYIB_BOARD.'"> 
 		<script type="text/javascript"><!--
-		if (localStorage[\'hiddenThreads.\' + \''.TINYIB_BOARD.'\'] && in_array(\''.$threadid.'\', localStorage[\'hiddenThreads.\' + \''.TINYIB_BOARD.'\'].split(\',\') ) ) {
-		document.getElementById(\'unhidethread'.$threadid.TINYIB_BOARD.'\').style.display = \'inline-block\';
-		document.getElementById(\'thread'.$threadid.TINYIB_BOARD.'\').style.display = \'none\';
+		if (localStorage[\'hiddenThreads.\' + \''. TINYIB_BOARD .'\'] && contains_rev(\''. $threadid .'\', localStorage[\'hiddenThreads.\' + \''. TINYIB_BOARD .'\'] ) ) {
+		document.getElementById(\'ut'. $threadid . TINYIB_BOARD . '\').style.display = \'inline-block\';
+		document.getElementById(\'t'. $threadid . TINYIB_BOARD . '\').style.display = \'none\';
 		}
-		//--></script>';
-		global $suka;
-		$suka=1;
-		$return .= '<a name="s'.$suka.'"></a>';
-		$suka+=1;
+		//--></script>
+		<div class="postContainer opContainer" id="pc'.$threadid.'">
+		<div class="post op" id="p'.$threadid.'">
+		<span id="sa'.$threadid.'"><img alt="H" class="extButton threadHideButton" onclick="togglethread(\''.$threadid.'\')" src="'.'/'.TINYIB_BOARD.'/icons/post_expand_minus.png" title="Hide thread">&nbsp;</span>';
+//		<script type="text/javascript"><!--
+//		if (localStorage[\'hiddenThreads.\' + \''.TINYIB_BOARD.'\'] && in_array(\''.$threadid.'\', localStorage[\'hiddenThreads.\' + \''.TINYIB_BOARD.'\'].split(\',\') ) ) {
+//		document.getElementById(\'unhidethread'.$threadid.TINYIB_BOARD.'\').style.display = \'inline-block\';
+//		document.getElementById(\'thread'.$threadid.TINYIB_BOARD.'\').style.display = \'none\';
+//		}
+//		//--></script>';
 	} else {
 		$return = '';
 	}
@@ -282,7 +306,7 @@ function buildPage($htmlposts, $parent, $pages = 0, $thispage = 0) {
 </table>
 EOF;
 	} else {
-		$postingmode = '&#91;<a href="../">Return</a>&#93;<div class="replymode">Posting mode: Reply</div> ';
+		$postingmode = '&#91;<a href="../">Return</a>&#93;<br><div class="replymode">Reply to thread</div> ';
 	}
 
 	$max_file_size_input_html = '';
@@ -357,7 +381,7 @@ EOF;
 							Embed
 						</td>
 						<td>
-							<input type="text" name="embed" size="41" accesskey="x" autocomplete="off">
+							<input type="text" name="embed" placeholder="YouTube/SoundCloud/Vimeo link" size="41" accesskey="x" autocomplete="off">
 						</td>
 					</tr>
 EOF;
@@ -410,11 +434,15 @@ EOF;
 						</td>
 
 					</tr>
+					<tr>
 						<td class="postblock">
 							Name
 						</td>
 						<td>
-							<input type="text" name="name" size="31" maxlength="75" accesskey="n">
+							<input type="text" placeholder="
+EOF;
+	$body.= TINYIB_ANON . <<<EOF
+" name="name" size="31" maxlength="75" accesskey="n">
 						</td>
 					</tr>
 					<tr>
@@ -499,7 +527,7 @@ function rebuildIndexes() {
 			$htmlreplies[] = buildPost($replies[$j], TINYIB_INDEXPAGE);
 		}
 
-		$htmlposts .= buildPost($thread, TINYIB_INDEXPAGE) . implode('', array_reverse($htmlreplies)) . "\n</div>\n<hr>";
+		$htmlposts .= buildPost($thread, TINYIB_INDEXPAGE) . implode('', array_reverse($htmlreplies)) . "\n</div>\n</div>\n</div>\n</div>\n<hr>";
 
 		if (++$i >= TINYIB_THREADSPERPAGE) {
 			$file = ($page == 0) ? 'index.html' : $page . '.html';
