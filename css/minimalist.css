@@ -1,0 +1,192 @@
+html, body {
+	background: #FFFFFF;
+	color: #000000;
+}
+
+a {
+	color: #0000EE;
+}
+
+a:hover {
+	color: #000000;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    /* border-top: 1px solid #000000; */
+    margin: auto;
+    padding: 0;
+}
+
+.reflink a:hover {
+	font-weight: bold;
+}
+
+.logo {
+	clear: both;
+	text-align: center;
+	font-size: 2em;
+	color: #000000;
+	width: 100%;
+}
+
+.replymode {
+	background: #FFFFFF;
+	text-align: center;
+	padding: 2px;
+	color: #000000;
+	width: 100%;
+}
+
+.manageinfo {
+	background: #00B930;
+	text-align: center;
+	padding: 2px;
+	color: #FFFFFF;
+	width: 100%;
+}
+
+.catalogmode {
+	background: #0040E0;
+	text-align: center;
+	padding: 2px;
+	color: #FFFFFF;
+	width: 100%;
+}
+
+.rules {
+	/*font-size:0.7em;*/
+	width: 468px;
+	font-size: 10px;
+	font-family: sans-serif;
+}
+
+.rules li {
+	margin-left: 1em;
+	/*text-indent: 0em;*/
+}
+
+.postblock {
+	background: #FFFFFF;
+	color: #000000;
+	font-weight: 800;
+}
+
+.footer {
+	font-size: 12px;
+	font-family: serif;
+}
+
+.passvalid {
+	background: #EEAA88;
+	text-align: center;
+	width: 100%;
+	color: #ffffff;
+}
+
+.dellist {
+	font-weight: bold;
+	text-align: center;
+}
+
+.delbuttons {
+	text-align: center;
+	padding-bottom: 4px;
+
+}
+
+.managehead {
+	background: #AAAA66;
+	color: #400000;
+	padding: 0;
+}
+
+.postlists {
+	background: #FFFFFF;
+	width: 100%;
+	padding: 0;
+	color: #800000;
+}
+
+.row1 {
+	background: #EEEECC;
+	color: #800000;
+}
+
+.row2 {
+	background: #DDDDAA;
+	color: #800000;
+}
+
+.unkfunc {
+	background: inherit;
+	color: #789922;
+}
+
+.filesize {
+	text-decoration: none;
+}
+
+	background: inherit;
+.filetitle {
+	font-size: 1.2em;
+	color: #CC1105;
+	font-weight: 800;
+}
+
+.postername {
+	color: #000000;
+	font-weight: bold;
+}
+
+.postertrip {
+	color: #FFFFFF;
+}
+
+.oldpost {
+	color: #FFFFFF;
+	font-weight: 800;
+}
+
+.omittedposts {
+	color: #000000;
+}
+
+.reply {
+	background: #FFFFFF;
+	color: #000000;
+	border:1px solid #000000;
+}
+
+.replyhl {
+	background: #F0C0B0;
+	color: #800000;
+}
+
+.replytitle {
+	font-size: 1.2em;
+	color: #000000;
+	font-weight: 800;
+}
+
+.commentpostername {
+	color: #000000;
+	font-weight: 800;
+}
+
+.thumbnailmsg {
+	font-size: small;
+	color: #800000;
+}
+
+.abbrev {
+	color: #707070;
+}
+
+.highlight {
+	background: #F0E0D6;
+	color: #800000;
+	border: 2px dashed #EEAA88;
+}
