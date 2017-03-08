@@ -48,9 +48,9 @@ function pageFooter() {
 	// This is all I ask in return for the free software you are using.
 
 	return <<<EOF
-		<div class="footer">
+		<!--div class="footer">
 			[<a href="https://github.com/tslocum/TinyIB" target="_top">tinyib</a> x <a href="https://github.com/SecondChannel/BBSEngine" target="_top">BBSE</a>]
-		</div>
+		</div-->
 	</body>
 </html>
 EOF;
@@ -305,8 +305,10 @@ function buildPage($htmlposts, $parent, $pages = 0, $thispage = 0) {
 	</tbody>
 </table>
 EOF;
+$rtoth = false;
 	} else {
 		$postingmode = '&#91;<a href="../">Return</a>&#93;<br><div class="replymode">Reply to thread</div> ';
+		$rtoth = true;
 	}
 
 	$max_file_size_input_html = '';
@@ -392,9 +394,9 @@ EOF;
 	}
 
 	$thumbnails_html = '';
-	if (isset($tinyib_uploads['image/jpeg']) || isset($tinyib_uploads['image/pjpeg']) || isset($tinyib_uploads['image/png']) || isset($tinyib_uploads['image/gif'])) {
+	/* if (isset($tinyib_uploads['image/jpeg']) || isset($tinyib_uploads['image/pjpeg']) || isset($tinyib_uploads['image/png']) || isset($tinyib_uploads['image/gif'])) {
 		$thumbnails_html = "<li>Images greater than $maxdimensions will be thumbnailed.</li>";
-	}
+	}*/ // Только глаза мозолит
 
 	$unique_posts = uniquePosts();
 	if ($unique_posts > 0) {
@@ -419,6 +421,9 @@ EOF;
 		</div>
 		<hr width="90%">
 		$postingmode
+EOF;
+if($rtoth == false){
+	$body .= <<<EOF
 		<div class="postarea">
 			<form name="postform" id="postform" action="imgboard.php" method="post" enctype="multipart/form-data">
 			$max_file_size_input_html
@@ -430,7 +435,7 @@ EOF;
 						<td>
 						</td>
 						<td>
-							<input id="sage" name="email" value="sage" style="vertical-align: middle;" type="checkbox"> Sage <input id="noko" name="noko" value="noko" style="vertical-align: middle;" type="checkbox"> Noko <input style="vertical-align: middle;" type="checkbox" id="embedcheck" onclick="mainEmbedForm();"> Embed
+							<input id="sage" name="email" value="sage" style="vertical-align: middle;" type="checkbox"> Sage <input id="noko" name="noko" value="noko" style="vertical-align: middle;" type="checkbox" checked> Noko <input style="vertical-align: middle;" type="checkbox" id="embedcheck" onclick="mainEmbedForm();"> Embed
 						</td>
 
 					</tr>
@@ -470,7 +475,7 @@ EOF;
 							Password
 						</td>
 						<td>
-							<input type="password" name="password" id="newpostpassword" size="8" accesskey="p">
+							<input type="password" name="password" id="newpostpassword" size="41" placeholder="For post and file deletion" accesskey="p">
 						</td>
 					</tr>
 					<tr>
@@ -489,6 +494,11 @@ EOF;
 			</form>
 		</div>
 		<hr>
+EOF;
+} else {
+	// Ну всё, нема
+}
+	$body .= <<<EOF
 		<form id="delform" action="imgboard.php?delete" method="post">
 		<input type="hidden" name="board" 
 EOF;
@@ -504,6 +514,85 @@ EOF;
 			</tbody>
 		</table>
 		</form>
+		<hr>
+EOF;
+if($rtoth == true){
+	$body .= <<<EOF
+		<div class="postarea">
+			<form name="postform" id="postform" action="imgboard.php" method="post" enctype="multipart/form-data">
+			$max_file_size_input_html
+			<input type="hidden" name="parent" value="$parent">
+			<table class="postform">
+				<tbody>
+					<tr>
+					<tr>
+						<td>
+						</td>
+						<td>
+							<input id="sage" name="email" value="sage" style="vertical-align: middle;" type="checkbox"> Sage <input id="noko" name="noko" value="noko" style="vertical-align: middle;" type="checkbox" checked> Noko <input style="vertical-align: middle;" type="checkbox" id="embedcheck" onclick="mainEmbedForm();"> Embed
+						</td>
+
+					</tr>
+					<tr>
+						<td class="postblock">
+							Name
+						</td>
+						<td>
+							<input type="text" placeholder="
+EOF;
+	$body.= TINYIB_ANON . <<<EOF
+" name="name" size="31" maxlength="75" accesskey="n">
+						</td>
+					</tr>
+					<tr>
+						<td class="postblock">
+							Subject
+						</td>
+						<td>
+							<input type="text" name="subject" size="31" maxlength="75" accesskey="s" autocomplete="off">
+							<input type="submit" value="Post" accesskey="z">
+						</td>
+					</tr>
+					<tr>
+						<td class="postblock">
+							Message
+						</td>
+						<td>
+							<textarea id="message" name="message" cols="50" rows="7" accesskey="m"></textarea>
+						</td>
+					</tr>
+					$captcha_html
+					$file_input_html
+					$embed_input_html
+					<tr>
+						<td class="postblock">
+							Password
+						</td>
+						<td>
+							<input type="password" name="password" id="newpostpassword" size="41" placeholder="For post and file deletion" accesskey="p">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="rules">
+							<ul>
+								$reqmod_html
+								$filetypes_html
+								$max_file_size_rules_html
+								$thumbnails_html
+								$unique_posts_html
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			</form>
+		</div>
+		<hr>
+EOF;
+} else {
+	// Ну всё, нема
+}
+$body .= <<<EOF
 		$pagenavigator
 		<br>
 EOF;

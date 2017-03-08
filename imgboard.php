@@ -103,7 +103,7 @@ if (isset($_POST['message']) || isset($_POST['file'])) {
 		$post['message'] = $_POST['message']; // Treat message as raw HTML
 	} else {
 		$rawposttext = '';
-		$post['message'] = str_replace("\n", '<br>', makeLinksClickable(colorQuote(postLink(cleanString(rtrim($_POST['message']))))));
+		$post['message'] = str_replace("\n", '<br>',bbcode(makeLinksClickable(colorQuote(postLink(cleanString(rtrim($_POST['message'])))))));
 	}
 	$post['password'] = ($_POST['password'] != '') ? md5(md5($_POST['password'])) : '';
 	$post['nameblock'] = nameBlock($post['name'], $post['tripcode'], $post['email'], time(), $rawposttext);

@@ -545,3 +545,29 @@ function getEmbed($url) {
 
 	return array('',  array());
 }
+
+function bbcode($data) {
+$input = array(
+      '/\[b\](.*?)\[\/b\]/is', // Bold
+      '/\[i\](.*?)\[\/i\]/is', // Italics
+      '/\[u\](.*?)\[\/u\]/is', // Underline
+      '/\[spoiler\](.*?)\[\/spoiler\]/is', // Spoiler
+      '/\[s\](.*?)\[\/s\]/is', // Strike
+      '/\==(.*?)\==/is', //Redtext
+      '/\##(.*?)\##/is', //Bluetext
+      '/\%%(.*?)\%%/is', //Whitetext
+      '/\&&(.*?)\&&/is', //Ggreentext
+  );
+  $output = array(
+    '<strong>$1</strong>', // Bold
+      '<em>$1</em>', // Italics
+      '<u>$1</u>', // Underline
+      '<span class="spoiler">$1</span>', // Spoiler
+      '<s>$1</s>', // Strike
+      '<strong style="color: #F80000;">$1</strong>', //Redtext
+      '<strong style="color: #1C19B5;">$1</strong>', //Bluetext
+      '<strong style="color: #FFFFFF;">$1</strong>', //Whitetext
+      '<strong style="color: #1E8237;">$1</strong>', //Ggreentext
+  );
+  return preg_replace($input, $output, $data);
+}
