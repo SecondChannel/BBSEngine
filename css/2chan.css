@@ -15,7 +15,7 @@ table * {
 a,a:visited {
 	color:#CCCCCC;
 }
-a:hover,p.intro a.post_no:hover {
+a:hover,p.intro a.post_no:hover,.omittedposts {
 	color:#DD3232;
 }
 a.post_no {
