@@ -189,7 +189,7 @@ function writePage($filename, $contents) {
 
 function fixLinksInRes($html) {
 	$search = array(' href="css/', ' src="js/', ' href="src/', ' href="thumb/', ' href="res/', ' href="imgboard.php', ' href="favicon.ico', 'src="thumb/', 'src="inc/',  'src="sticky.png', ' action="imgboard.php');
-	$replace = array(' href="../css/', ' src="../js/', ' href="../src/', ' href="../thumb/', ' href="../res/', ' href="../imgboard.php', ' href="../favicon.ico', 'src="../thumb/', 'src="../inc/', 'src="../sticky.png', ' action="../imgboard.php');
+	$replace = array(' href="/'.TINYIB_BOARD.'/css/', ' src="/'.TINYIB_BOARD.'/js/', ' href="/'.TINYIB_BOARD.'/src/', ' href="/'.TINYIB_BOARD.'/thumb/', ' href="/'.TINYIB_BOARD.'/res/', ' href="/'.TINYIB_BOARD.'/imgboard.php', ' href="/'.TINYIB_BOARD.'/favicon.ico', 'src="/'.TINYIB_BOARD.'/thumb/', 'src="/'.TINYIB_BOARD.'/inc/', 'src="/'.TINYIB_BOARD.'/sticky.png', ' action="/'.TINYIB_BOARD.'/imgboard.php');
 
 	return str_replace($search, $replace, $html);
 }
@@ -553,7 +553,6 @@ $input = array(
       '/\[u\](.*?)\[\/u\]/is', // Underline
       '/\[spoiler\](.*?)\[\/spoiler\]/is', // Spoiler
       '/\[s\](.*?)\[\/s\]/is', // Strike
-      '/\==(.*?)\==/is', //Redtext
       '/\##(.*?)\##/is', //Bluetext
       '/\%%(.*?)\%%/is', //Whitetext
       '/\&&(.*?)\&&/is', //Ggreentext
@@ -564,7 +563,6 @@ $input = array(
       '<u>$1</u>', // Underline
       '<span class="spoiler">$1</span>', // Spoiler
       '<s>$1</s>', // Strike
-      '<strong style="color: #F80000;">$1</strong>', //Redtext
       '<strong style="color: #1C19B5;">$1</strong>', //Bluetext
       '<strong style="color: #FFFFFF;">$1</strong>', //Whitetext
       '<strong style="color: #1E8237;">$1</strong>', //Ggreentext

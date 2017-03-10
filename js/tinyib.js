@@ -9,6 +9,61 @@ function quotePost(postID) {
 
 	return false;
 }
+function mainAjaxRep(){
+  if ($("#rmode").length > 0) {
+  $(document).ready(function (e) {
+      $("#postform").on('submit',(function(e) {
+          e.preventDefault();
+          $.ajax({
+              url: "/"+this_board_dir+"/imgboard.php", // Url to which the request is send
+              type: "POST",
+              data: new FormData(this), 
+              contentType: false,       
+              cache: false, 
+              processData:false,
+              success: function(data){
+                document.getElementById('postform').reset();
+                mainEmbedForm();
+                getnewposts();
+              }
+          });
+      }));
+  });
+  } else {
+    // lol ok
+  }
+}
+
+function getnewposts(threadid) {
+  if(typeof threadid === 'undefined') threadid = $('input[name=parent]').val();
+  var lastpost = ($('.replyContainer').last().find('table[id^=key]').attr('id'));
+  lastpost = lastpost ? lastpost.substring(3) : '0';//threadid;
+  $.ajax({
+    url: '/'+this_board_dir+'/expand.php?from=' + lastpost + '&id=' + threadid,
+    success: function(data) {
+      if (data) {
+        var $target = $('.replyContainer').length ? $('.replyContainer').last() : $('.message');
+        $target.after(data);
+        // console.log(data); // debug
+        //$('.newposts').last().hide().show();
+        //bbse.thread_updater.advanced.current_max_delay = 10;
+      } else {
+      	//bbse.thread_updater.advanced.current_max_delay += (bbse.thread_updater.advanced.current_max_delay < bbse.thread_updater.advanced.max_timeout) ? bbse.thread_updater.advanced.step_timeout : 0;
+        // alert('Нет новых постов'); // debug
+      }
+//      $('#newposts_get').show();
+//      $('#newposts_load').hide();
+    },
+    error: function(xhr, status) {
+      alert("Ошибка: (" + status + ")");
+      //$('#newposts_get').show();
+      //$('#newposts_load').hide();
+    }
+  });
+  //$('#newposts_get').hide();
+  //$('#newposts_load').show();
+  return false;
+}
 
 function contains(a, obj) {
     for (var i = 0; i < a.length; i++) {

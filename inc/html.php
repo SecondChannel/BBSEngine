@@ -79,7 +79,7 @@ function makeLinksClickable($text) {
 
 	return $text;
 }
-function buildPost($post, $res) {
+function buildPost($post, $res, $key='0') {
 	$threadid = ($post['parent'] == TINYIB_NEWTHREAD) ? $post['id'] : $post['parent'];
 	if ($post['parent'] == TINYIB_NEWTHREAD) {
 		//$return = '<span id="unhidethread'.$threadid.TINYIB_BOARD.'" style="display: none;">
@@ -96,13 +96,13 @@ function buildPost($post, $res) {
 	<input name="delete" value="'.$threadid.'" type="checkbox">' . $post["nameblock"] . '
 </label>
 <span class="reflink">
-	<a href="res/'.$threadid.'.html#'.$threadid.'">No.</a><a href="res/'. $threadid .'.html#q'. $threadid .'">'. $threadid .'</a>
+	<a href="/'.TINYIB_BOARD.'/res/'.$threadid.'.html#'.$threadid.'">No.</a><a href="/'.TINYIB_BOARD.'/res/'. $threadid .'.html#q'. $threadid .'">'. $threadid .'</a>
 </span>
 <br>
 </div>
 		<div class="thread" id="t'.$threadid.TINYIB_BOARD.'"> 
 		<script type="text/javascript"><!--
-		if (localStorage[\'hiddenThreads.\' + \''. TINYIB_BOARD .'\'] && contains_rev(\''. $threadid .'\', localStorage[\'hiddenThreads.\' + \''. TINYIB_BOARD .'\'] ) ) {
+		if (localStorage[\'hiddenThreads.\' + \''. TINYIB_BOARD .'\'] && HiddenThreads.isHidden(\''.$threadid.'\') ) {
 		document.getElementById(\'ut'. $threadid . TINYIB_BOARD . '\').style.display = \'inline-block\';
 		document.getElementById(\'t'. $threadid . TINYIB_BOARD . '\').style.display = \'none\';
 		}
@@ -122,7 +122,7 @@ function buildPost($post, $res) {
 	if ($res == TINYIB_RESPAGE) {
 		$reflink = "<a href=\"$threadid.html#{$post['id']}\">No.</a><a href=\"$threadid.html#q{$post['id']}\" onclick=\"javascript:quotePost('{$post['id']}')\">{$post['id']}</a>";
 	} else {
-		$reflink = "<a href=\"res/$threadid.html#{$post['id']}\">No.</a><a href=\"res/$threadid.html#q{$post['id']}\">{$post['id']}</a>";
+		$reflink = "<a href=\"/".TINYIB_BOARD."/res/$threadid.html#{$post['id']}\">No.</a><a href=\"/".TINYIB_BOARD."/res/$threadid.html#q{$post['id']}\">{$post['id']}</a>";
 	}
 
 	if ($post["stickied"] == 1) {
@@ -136,7 +136,7 @@ function buildPost($post, $res) {
 	$filehtml = '';
 	$filesize = '';
 	$expandhtml = '';
-	$direct_link = isEmbed($post["file_hex"]) ? "#" : (($res == TINYIB_RESPAGE ? "../" : "") . "src/" . $post["file"]);
+	$direct_link = isEmbed($post["file_hex"]) ? "#" : (($res == TINYIB_RESPAGE ? "/".TINYIB_BOARD."/" : "/".TINYIB_BOARD."/") . "src/" . $post["file"]);
 
 	if ($post['parent'] == TINYIB_NEWTHREAD && $post["file"] != '') {
 		$filesize .= isEmbed($post['file_hex']) ? 'Embed: ' : 'File: ';
@@ -155,7 +155,7 @@ function buildPost($post, $res) {
 </video>
 EOF;
 	} else if (in_array(substr($post['file'], -4), array('.jpg', '.png', '.gif'))) {
-		$expandhtml = "<a href=\"src/${post["file"]}\" onclick=\"return expandFile(event, '${post['id']}');\"><img src=\"" . ($res == TINYIB_RESPAGE ? "../" : "") . "src/${post["file"]}\" width=\"${post["image_width"]}\" style=\"max-width: 100%;height: auto;\"></a>";
+		$expandhtml = "<a href=\"".TINYIB_BOARD."/src/${post["file"]}\" onclick=\"return expandFile(event, '${post['id']}');\"><img src=\"" . ($res == TINYIB_RESPAGE ? "/".TINYIB_BOARD."/" : "/".TINYIB_BOARD."/") . "src/${post["file"]}\" width=\"${post["image_width"]}\" style=\"max-width: 100%;height: auto;\"></a>";
 	}
 
 	$thumblink = "<a href=\"$direct_link\" target=\"_blank\"" . ((isEmbed($post["file_hex"]) || in_array(substr($post['file'], -4), array('.jpg', '.png', '.gif', 'webm'))) ? " onclick=\"return expandFile(event, '${post['id']}');\"" : "") . ">";
@@ -186,7 +186,10 @@ EOF;
 		if ($post["thumb_width"] > 0 && $post["thumb_height"] > 0) {
 			$filehtml .= <<<EOF
 $thumblink
-	<img src="thumb/${post["thumb"]}" alt="${post["id"]}" class="thumb" id="thumbnail${post['id']}" width="${post["thumb_width"]}" height="${post["thumb_height"]}">
+	<img src="
+EOF;
+$filehtml.= '/' . TINYIB_BOARD . <<<EOF
+/thumb/${post["thumb"]}" alt="${post["id"]}" class="thumb" id="thumbnail${post['id']}" width="${post["thumb_width"]}" height="${post["thumb_height"]}">
 </a>
 EOF;
 		}
@@ -203,7 +206,11 @@ EOF;
 		$return .= $filehtml;
 	} else {
 		$return .= <<<EOF
-<table>
+<div class='postContainer replyContainer' id='pc${post["id"]}'>
+<table id='key
+EOF;
+$return .= $key . <<<EOF
+'>
 <tbody>
 <tr>
 <td class="doubledash">
@@ -259,7 +266,7 @@ EOF;
 </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 EOF;
 	}
 	return $return;
@@ -307,7 +314,7 @@ function buildPage($htmlposts, $parent, $pages = 0, $thispage = 0) {
 EOF;
 $rtoth = false;
 	} else {
-		$postingmode = '&#91;<a href="../">Return</a>&#93;<br><div class="replymode">Reply to thread</div> ';
+		$postingmode = '&#91;<a href="../">Return</a>&#93;<br><div id="rmode" class="replymode">Reply to thread</div> ';
 		$rtoth = true;
 	}
 
@@ -404,8 +411,16 @@ EOF;
 	}
 
 	$body = <<<EOF
-	<body  onload="mainEmbedForm();">
-	[<a href="/">Root</a>] - <select name="switchcontrol" size="1" onChange="chooseStyle(this.options[this.selectedIndex].value, 60)">
+	<body  onload="mainEmbedForm();mainAjaxRep();">
+	[<a href="/">Root</a>] - 
+EOF;
+$filename_bl = "/srv/http/boards.lst";
+$handle_bl = fopen($filename_bl, "r");
+$boardlist = fread($handle_bl, filesize($filename_bl));
+fclose($handle_bl);
+
+	$body .= file_get_contents('../') . $boardlist .  <<<EOF
+ - <select name="switchcontrol" size="1" onChange="chooseStyle(this.options[this.selectedIndex].value, 60)">
 <option value="none" selected="selected">Themes</option>
 <option name="Minimalist" value="Minimalist" id="Minimalist"> Minimalist</option>
 <option name="Burichan" value="Burichan" id="Burichan"> Burichan</option>
@@ -504,6 +519,13 @@ EOF;
 EOF;
 	$body .= 'value="' . TINYIB_BOARD . '">' . <<<EOF
 		$htmlposts
+EOF;
+if($rtoth == true){
+	$body .= "[<a class='update_button' href='#bottom' onclick='getnewposts();'>Update</a>]";
+} else {
+
+}
+$body .= <<<EOF
 		<table class="userdelete">
 			<tbody>
 				<tr>
@@ -519,7 +541,7 @@ EOF;
 if($rtoth == true){
 	$body .= <<<EOF
 		<div class="postarea">
-			<form name="postform" id="postform" action="imgboard.php" method="post" enctype="multipart/form-data">
+			<form name="postform" id="postform" action="../imgboard.php">
 			$max_file_size_input_html
 			<input type="hidden" name="parent" value="$parent">
 			<table class="postform">
@@ -550,7 +572,7 @@ EOF;
 						</td>
 						<td>
 							<input type="text" name="subject" size="31" maxlength="75" accesskey="s" autocomplete="off">
-							<input type="submit" value="Post" accesskey="z">
+							<input type="submit" value="Post" onclick="ajaxReply();" accesskey="z">
 						</td>
 					</tr>
 					<tr>
@@ -637,8 +659,8 @@ function rebuildIndexes() {
 function rebuildThread($id) {
 	$htmlposts = "";
 	$posts = postsInThreadByID($id);
-	foreach ($posts as $post) {
-		$htmlposts .= buildPost($post, TINYIB_RESPAGE);
+	foreach ($posts as $key => $post) {
+		$htmlposts .= buildPost($post, TINYIB_RESPAGE, $key);
 	}
 
 	$htmlposts .= "\n<hr>";
